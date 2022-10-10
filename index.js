@@ -19,6 +19,8 @@ const productRoutes = require('./routes/productRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const imageRoutes = require('./routes/imageRoutes');
 
+
+
 app.use(cors());
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -27,6 +29,9 @@ app.use('/products', productRoutes);
 app.use('/orders', orderRoutes);
 app.use('/images', imageRoutes);
 
+app.get('/', (req, res)=>{
+  res.send('APP IS RUNNING')
+});
 
 app.post('/create-payment', async(req, res)=> {
   const {amount} = req.body;
@@ -45,8 +50,11 @@ app.post('/create-payment', async(req, res)=> {
 })
 
 
-server.listen(8080, ()=> {
-  console.log('server running at port', 8080)
-})
-
+// server.listen(8080, ()=> {
+//   console.log('server running at port', 8080)
+// })
+const port = process.env.PORT ||8080;
+server.listen(port, () =>
+  console.log(`Your server is running on port ${port}`)
+);
 app.set('socketio', io);
