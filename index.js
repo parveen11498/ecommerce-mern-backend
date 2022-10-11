@@ -5,13 +5,15 @@ const http = require('http');
 require('dotenv').config();
 const stripe = require('stripe')("sk_test_51LnjBrSEqOMeYA8S9Xn107pYq7DMFUOibIfcX7xP159Te08AK7Pi9aF2DXZWymSWZQDLQ3nTSYRHFWDipoIWg1vq00SB2dE5lm");
 require('./connection')
-const server = http.createServer(app);
-const {Server} = require('socket.io');
-const io = new Server(server, {
-  cors: 'http://localhost:3000',
-  methods: ['GET', 'POST', 'PATCH', "DELETE"]
-})
 
+const server = require('http').createServer(app);
+const io = require('socket.io')
+(server, {
+  cors: {
+    origins: '*',
+    methods: ['GET', 'POST', 'PATCH', "DELETE"]
+  }
+})
 
 const User = require('./models/User');
 const userRoutes = require('./routes/userRoutes');
@@ -49,10 +51,6 @@ app.post('/create-payment', async(req, res)=> {
    }
 })
 
-
-// server.listen(8080, ()=> {
-//   console.log('server running at port', 8080)
-// })
 const port = process.env.PORT ||8080;
 server.listen(port, () =>
   console.log(`Your server is running on port ${port}`)
